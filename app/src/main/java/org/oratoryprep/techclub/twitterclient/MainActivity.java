@@ -38,12 +38,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        Debug.startMethodTracing("/sdcard/trace.trace");
-
         asyncTask.execute();
-
-        Debug.stopMethodTracing();
-
 
     }
 
