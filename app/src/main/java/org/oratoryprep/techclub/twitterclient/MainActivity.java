@@ -7,6 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import java.util.Arrays;
+
+import cz.msebera.android.httpclient.Header;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,31 +21,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set the text of the textview.
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText("HI TECH CLUB!");
 
-        AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://104.154.41.133/api/version", new AsyncHttpResponseHandler() {
 
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                String responseString = new String(response);
+                Log.d("Debug", "This is the message content:\n" + responseString);
+
+
             }
 
             @Override
-            protected Void doInBackground(Void... params) {
-
-                Log.d("Testing", "Testing ASyncTask!");
-                return null;
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
-            }
-        };
-
-        asyncTask.execute();
+        });
 
     }
 
